@@ -11,19 +11,13 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
 const dishRouter = require('./routes/dishRouter');
-
-app.use('/dishes', dishRouter);
-
-
 const promoRouter = require('./routes/promoRouter');
-
-app.use('/promotions', promoRouter);
-
-
 const leaderRouter = require('./routes/leaderRouter');
 
-app.use('/leaders', leaderRouter);
 
+app.use('/dishes', dishRouter);
+app.use('/promotions', promoRouter);
+app.use('/leaders', leaderRouter);
 
 app.use(bodyParser.json());
 
