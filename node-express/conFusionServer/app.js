@@ -30,9 +30,17 @@ connect.then((db) => {
 
 var app = express();
 
-app.use('/dishes', dishRouter);
-app.use('/promotions', promoRouter);
-app.use('/leaders', leaderRouter);
+// Secure traffic only
+app.all('*', (req, res, next) => {
+  if (req.secure) {
+    return next();
+  }
+  else {
+    res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
+  }
+});
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -48,7 +56,9 @@ app.use(passport.initialize());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/dishes', dishRouter);
+app.use('/promotions', promoRouter);
+app.use('/leaders', leaderRouter);
 
 
 app.use(express.static(path.join(__dirname, 'public')));
